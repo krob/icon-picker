@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!-- ====================================================================== -->
+    <!-- P A R E N T P R O J E C T D E S C R I P T I O N -->
+    <!-- ====================================================================== -->
+
+    <groupId>com.github.krob</groupId>
+    <artifactId>icon-picker</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
+
+    <name>Icon Picker</name>
+    
+    <prerequisites>
+        <maven>3.0.2</maven>
+    </prerequisites>
+
+    <!-- ====================================================================== -->
+    <!-- P R O P E R T I E S -->
+    <!-- ====================================================================== -->
+    <properties>
+    	<!-- Encoding -->
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        
+        <!-- Versions -->
+    	<com.adobe.aem.uber-jar.version>6.3.0</com.adobe.aem.uber-jar.version>
+        
+        <!-- Directories -->
+	    <rootdir>${project.basedir}</rootdir>
+	</properties>
+
+    <dependencyManagement>
+        <dependencies>
+        	<!-- ********************************************* -->
+        	<!-- Core Dependencies -->
+        	<!-- ********************************************* -->
+        	<!-- Adobe AEM Dependencies -->
+        	<dependency>
+    			<groupId>com.adobe.aem</groupId>
+			    <artifactId>uber-jar</artifactId>
+			    <version>${com.adobe.aem.version}</version>
+				<classifier>apis</classifier>
+                <scope>provided</scope>
+			</dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!--
+        Inclusion of repositories in POMs is controversial, to say the least.
+        It would be best if you proxied the Adobe repository using a Maven
+        Repository Manager. Once you do that, remove these sections.
+     -->
+    <repositories>
+		<repository>
+			<id>apache</id>
+			<name>Apache Public Repository</name>
+			<url>http://repo.maven.apache.org/maven2</url>
+			<layout>default</layout>
+		</repository>
+		<repository>
+			<id>apache-snapshot</id>
+			<name>Apache Public Repository</name>
+			<url>http://repository.apache.org/snapshots</url>
+			<layout>default</layout>
+		</repository>
+		<repository>
+			<id>adobe-repo</id>
+			<name>Adobe Public Repository</name>
+			<url>https://repo.adobe.com/nexus/content/repositories/public/</url>
+			<layout>default</layout>
+		</repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>adobe</id>
+            <name>Adobe Public Repository</name>
+            <url>https://repo.adobe.com/nexus/content/groups/public/</url>
+            <layout>default</layout>
+        </pluginRepository>
+    </pluginRepositories>
+     <build>
+		<plugins>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>enforce-java</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <message>Project must be compiled with Java 6</message>
+                                    <version>${java.version}</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+			<plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+            </plugin>
+		</plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-scr-plugin</artifactId>
+                    <version>1.7.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>2.3.7</version>
+                </plugin>
+               
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.6</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.7</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.14.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.9</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.sling</groupId>
+                    <artifactId>maven-sling-plugin</artifactId>
+                    <version>2.1.0</version>
+                    <configuration>
+                        <username>${cq.username}</username>
+                        <password>${cq.password}</password>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.day.jcr.vault</groupId>
+                    <artifactId>content-package-maven-plugin</artifactId>
+                    <version>0.0.20</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <failOnError>true</failOnError>
+                        <username>${cq.username}</username>
+                        <password>${cq.password}</password>
+                    </configuration>
+                </plugin>
+	
+                <!--This plugin's configuration is used to store Eclipse
+                    m2e settings only. It has no influence on the Maven build itself. -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>
+                                            org.apache.felix
+                                        </groupId>
+                                        <artifactId>
+                                            maven-scr-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.0.0,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>scr</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore/>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+				 </plugins>
+        </pluginManagement>
+    </build>
+   <profiles>
+		<profile>
+			<id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>env.type</name>
+                    <value>local</value>
+                </property>
+            </activation>
+            <properties>
+            	<cq.host>http://localhost</cq.host>
+                <cq.port>4502</cq.port>
+                <cq.user>admin</cq.user>
+                <cq.password>admin</cq.password>             
+            </properties>
+		</profile>
+		<profile>
+            <id>local-publish</id>
+            <properties>
+                <cq.host>http://localhost</cq.host>
+                <cq.port>4503</cq.port>
+                <cq.user>admin</cq.user>
+                <cq.password>admin</cq.password>
+            </properties>
+        </profile>
+	</profiles>
+  <modules>
+    <module>ui.apps</module>
+  </modules>
+   <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>2.5</version>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>

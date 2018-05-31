@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!-- ====================================================================== -->
+    <!-- P A R E N T P R O J E C T D E S C R I P T I O N -->
+    <!-- ====================================================================== -->
+    <parent>
+        <groupId>com.github.krob</groupId>
+    	<artifactId>icon-picker</artifactId>
+    	<version>1.0</version>
+		<relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <!-- ====================================================================== -->
+    <!-- P R O J E C T D E S C R I P T I O N -->
+    <!-- ====================================================================== -->
+
+    <artifactId>ui.apps</artifactId>
+    <packaging>content-package</packaging>
+
+	<properties>
+		<rootdir>${project.parent.basedir}</rootdir>
+	</properties>
+    <dependencies>
+		<!-- ********************************************* -->
+    	<!-- Core Dependencies -->
+    	<!-- ********************************************* -->
+    	<!-- Adobe AEM Dependencies -->
+        <dependency>
+			<groupId>com.adobe.aem</groupId>
+			<artifactId>uber-jar</artifactId>
+			<version>${com.adobe.aem.uber-jar.version}</version>
+            <classifier>apis</classifier>	
+            <scope>provided</scope>
+		</dependency>
+    </dependencies>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/content/jcr_root</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/.svn</exclude>
+                    <exclude>**/.vlt</exclude>
+                    <exclude>**/.vltignore</exclude>
+                    <exclude>**/.DS_Store</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/content/META-INF/vault/definition</directory>
+                <targetPath>../vault-work/META-INF/vault/definition</targetPath>
+            </resource>  
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <includeEmptyDirs>true</includeEmptyDirs>
+                </configuration>
+            </plugin>
+
+			<plugin>
+				<groupId>com.day.jcr.vault</groupId>
+				<artifactId>content-package-maven-plugin</artifactId>
+				<configuration>
+					<filterSource>src/main/content/META-INF/vault/filter.xml</filterSource>
+					<verbose>true</verbose>
+					<failOnError>true</failOnError>
+				</configuration>		
+				<executions>
+					<execution>
+						<id>install-package</id>
+						<goals>
+							<goal>install</goal>
+						</goals>
+						<phase>install</phase>
+						<configuration>
+							<targetURL>${cq.host}:${cq.port}/crx/packmgr/service.jsp?force=true</targetURL>
+							<userId>${cq.user}</userId>
+							<password>${cq.password}</password>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Dialog"
+    height="600"
+    width="800"
+    xtype="dialog">
+    <items jcr:primaryType="cq:WidgetCollection">
+        <iconPanel
+            jcr:primaryType="cq:Widget"
+            title="Icon"
+            xtype="panel">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <icon
+					jcr:primaryType="cq:Widget" 
+					fieldLabel="Icon"
+					fieldDescription="Click on icon to pick it." 
+					allowBlank="false"
+					name="./icon"
+					xtype="customiconpicker" />        
+            </items>
+        </iconPanel>
+    </items>
+</jcr:root>
